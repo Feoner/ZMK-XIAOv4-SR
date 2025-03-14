@@ -4,6 +4,8 @@ manifest:
       url-base: https://github.com/petejohanson
     - name: inorichi
       url-base: https://github.com/inorichi
+    - name: ftc
+      url-base: https://github.com/ftc
   projects:
     - name: zmk
       remote: zmkfirmware
