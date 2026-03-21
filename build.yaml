@@ -1,8 +1,11 @@
 ---
 include:
-  - board: xiao_ble//zmk
+  - board: xiao_ble
     shield: skreecustom_left nice_view_adapter nice_view
-  - board: xiao_ble//zmk
+    cmake-args: -DBOARD_QUALIFIERS=//zmk
+  - board: xiao_ble
     shield: skreecustom_right nice_view_adapter nice_view
-  - board: xiao_ble//zmk
+    cmake-args: -DBOARD_QUALIFIERS=//zmk
+  - board: xiao_ble
     shield: settings_reset
+    cmake-args: -DBOARD_QUALIFIERS=//zmk
