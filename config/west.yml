@@ -16,6 +16,6 @@ manifest:
       revision: main
     - name: nice-view-gif
       remote: danielsodium
-      revision: bongo-cat
+      revision: main
   self:
     path: config
