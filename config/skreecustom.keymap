@@ -11,10 +11,10 @@
 
 / {
     behaviors {
-        scroll_encoder: scroll_encoder {
+        word_nav: word_nav {
             compatible = "zmk,behavior-sensor-rotate";
             #sensor-binding-cells = <0>;
-            bindings = <&msc SCRL_DOWN>, <&msc SCRL_UP>;
+            bindings = <&kp LC(RIGHT)>, <&kp LC(LEFT)>;
         };
     };
 
@@ -35,7 +35,7 @@
                                       &kp LG(LS(N4))  &kp C_AC_DESKTOP_SHOW_ALL_WINDOWS  &mo 1               &kp ENTER  &kp SPACE  &kp RIGHT_GUI
               >;
 
-              sensor-bindings = <&scroll_encoder>;
+              sensor-bindings = <&word_nav>;
           };
 
           layer_1 {
@@ -55,7 +55,7 @@
                                                     &trans          &trans        &trans          &trans         &trans         &trans
               >;
 
-              sensor-bindings = <&scroll_encoder>;
+              sensor-bindings = <&word_nav>;
           };
 
           layer_2 {
@@ -70,7 +70,7 @@
                           &bootloader  &trans  &trans    &trans  &trans  &trans
               >;
 
-              sensor-bindings = <&scroll_encoder>;
+              sensor-bindings = <&word_nav>;
           };
       };
   };
