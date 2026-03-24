@@ -1,6 +1,4 @@
 /*
- * Copyright (c) 2020 The ZMK Contributors
- *
  * SPDX-License-Identifier: MIT
  */
 
@@ -27,11 +25,8 @@
                                     &kp LG(LS(N4))  &kp C_AC_DESKTOP_SHOW_ALL_WINDOWS  &mo 1               &kp ENTER  &kp SPACE  &kp RIGHT_GUI
             >;
 
-            /* Encoder rotation is configured via sensor-bindings. [1](https://zmk.dev/docs/features/encoders)
-             * Encoder 1: true vertical mouse wheel scroll via &msc. [2](https://zmk.dev/docs/keymaps/behaviors/mouse-emulation)[3](https://docs.moergo.com/layout-editor-guide/mouse-emulation/)
-             * Encoder 2: Page Up/Down (unchanged).
-             */
-            sensor-bindings = <&msc SCRL_UP &msc SCRL_DOWN  &inc_dec_kp PG_UP PG_DN>;
+            /* ONE encoder → vertical mouse wheel scroll */
+            sensor-bindings = <&inc_dec_msc SCRL_UP SCRL_DOWN>;
         };
 
         layer_1 {
@@ -46,7 +41,7 @@
                                                   &trans          &trans        &trans          &trans         &trans         &trans
             >;
 
-            sensor-bindings = <&msc SCRL_UP &msc SCRL_DOWN  &inc_dec_kp PG_UP PG_DN>;
+            sensor-bindings = <&inc_dec_msc SCRL_UP SCRL_DOWN>;
         };
 
         layer_2 {
@@ -61,52 +56,8 @@
                         &bootloader  &trans  &trans    &trans  &trans  &trans
             >;
 
-            sensor-bindings = <&msc SCRL_UP &msc SCRL_DOWN  &inc_dec_kp PG_UP PG_DN>;
-        };
-
-        layer_3 {
-            bindings = <
-                &trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans
-                &trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans
-                &trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans
-                &trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans
-                &trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans
-                                        &trans
-                        &trans  &trans  &trans    &trans
-                        &trans  &trans  &trans    &trans  &trans  &trans
-            >;
-
-            sensor-bindings = <&msc SCRL_UP &msc SCRL_DOWN  &inc_dec_kp PG_UP PG_DN>;
-        };
-
-        layer_4 {
-            bindings = <
-                &trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans
-                &trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans
-                &trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans
-                &trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans
-                &trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans
-                                        &trans
-                        &trans  &trans  &trans    &trans
-                        &trans  &trans  &trans    &trans  &trans  &trans
-            >;
-
-            sensor-bindings = <&msc SCRL_UP &msc SCRL_DOWN  &inc_dec_kp PG_UP PG_DN>;
-        };
-
-        layer_5 {
-            bindings = <
-                &trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans
-                &trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans
-                &trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans
-                &trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans
-                &trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans
-                                        &trans
-                        &trans  &trans  &trans    &trans
-                        &trans  &trans  &trans    &trans  &trans  &trans
-            >;
-
-            sensor-bindings = <&msc SCRL_UP &msc SCRL_DOWN  &inc_dec_kp PG_UP PG_DN>;
+            sensor-bindings = <&inc_dec_msc SCRL_UP SCRL_DOWN>;
         };
     };
 };
+``
