@@ -14,7 +14,7 @@ manifest:
     - name: zmk-pmw3610-driver
       remote: inorichi
       revision: main
-    - name: nice-view-gif
+    - name: nice-view-gifs
       remote: danielsodium
       revision: main
   self:
