@@ -21,7 +21,7 @@
                                     &kp LG(LS(N4))  &kp C_AC_DESKTOP_SHOW_ALL_WINDOWS  &mo 1               &kp ENTER  &kp SPACE  &kp RIGHT_GUI
             >;
 
-            sensor-bindings = <&inc_dec_msc SCRL_UP SCRL_DOWN>;
+            sensor-bindings = <&msc SCRL_UP &msc SCRL_DOWN>;
         };
     };
 };
