@@ -4,6 +4,8 @@ manifest:
       url-base: https://github.com/zmkfirmware
     - name: inorichi
       url-base: https://github.com/inorichi
+    - name: danielsodium
+      url-base: https://github.com/danielsodium
   projects:
     - name: zmk
       remote: zmkfirmware
@@ -12,5 +14,8 @@ manifest:
     - name: zmk-pmw3610-driver
       remote: inorichi
       revision: main
+    - name: nice-view-gif
+      remote: danielsodium
+      revision: bongo-cat
   self:
     path: config
