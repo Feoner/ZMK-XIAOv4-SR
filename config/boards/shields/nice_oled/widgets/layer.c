@@ -12,7 +12,8 @@ void draw_layer_status(lv_obj_t *canvas, const struct status_state *state) {
 
     char text[10] = {};
 
-    if (state->layer_label == NULL) {
+    // skreecustom: ZMK v0.3 returns "" (not NULL) for layers without display-name
+    if (state->layer_label == NULL || state->layer_label[0] == '\0') {
         sprintf(text, "Layer %i", state->layer_index);
     } else {
         strncpy(text, state->layer_label, 9);

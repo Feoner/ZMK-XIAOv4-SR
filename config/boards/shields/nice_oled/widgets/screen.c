@@ -60,6 +60,20 @@ struct battery_state {
  * Esta función toma el estado de la batería del central y del periférico
  * y lo muestra como una cadena de texto simple en las coordenadas especificadas.
  */
+// skreecustom: read the levels from ZMK on every redraw. Upstream only stored them from
+// battery events, which ZMK sends on change; events sent before the screen existed were
+// lost, so the display showed "0  0" until a level changed.
+static uint8_t live_battery_level(const struct status_state *state, int i) {
+    if (i == 0) {
+        return zmk_battery_state_of_charge();
+    }
+    uint8_t level;
+    if (zmk_split_central_get_peripheral_battery_level(i - 1, &level) == 0) {
+        return level;
+    }
+    return state->batteries[i].level;
+}
+
 static void draw_battery_text(lv_obj_t *canvas, const struct status_state *state) {
     // Un buffer de texto más grande para manejar múltiples baterías
     char text[32] = "";
@@ -79,7 +93,7 @@ static void draw_battery_text(lv_obj_t *canvas, const struct status_state *state
     char *end = text + sizeof(text);
     for (int i = 0; i < CONFIG_NICE_OLED_SPLIT_TOTAL_DEVICES; i++) {
         // Añade el nivel de la batería y un espacio, controlando el tamaño del buffer
-        int written = snprintf(p, end - p, "%d ", state->batteries[i].level);
+        int written = snprintf(p, end - p, "%d ", live_battery_level(state, i));
         if (written > 0) {
             p += written;
         }
@@ -95,7 +109,7 @@ static void draw_battery_text(lv_obj_t *canvas, const struct status_state *state
     char *end = text + sizeof(text);
     // El bucle empieza en 1 para saltarse la batería central (índice 0)
     for (int i = 1; i < CONFIG_NICE_OLED_SPLIT_TOTAL_DEVICES; i++) {
-        int written = snprintf(p, end - p, "%d  ", state->batteries[i].level);
+        int written = snprintf(p, end - p, "%d  ", live_battery_level(state, i));
         if (written > 0) {
             p += written;
         }
@@ -107,11 +121,12 @@ static void draw_battery_text(lv_obj_t *canvas, const struct status_state *state
 #elif IS_ENABLED(CONFIG_NICE_OLED_WIDGET_CENTRAL_SHOW_BATTERY_PERIPHERAL_AND_CENTRAL)
     // MODO 3: Muestra la batería central y la del PRIMER periférico
     if (CONFIG_NICE_OLED_SPLIT_TOTAL_DEVICES >= 2) {
-        snprintf(text, sizeof(text), "%d  %d", state->batteries[0].level,
-                 state->batteries[1].level);
+        // skreecustom: left (peripheral) first, then right (central), matching the desk layout
+        snprintf(text, sizeof(text), "%d  %d", live_battery_level(state, 1),
+                 live_battery_level(state, 0));
     } else {
         // Si no hay periférico, muestra solo la central
-        snprintf(text, sizeof(text), "%d", state->batteries[0].level);
+        snprintf(text, sizeof(text), "%d", live_battery_level(state, 0));
     }
 #endif
 
@@ -973,7 +988,7 @@ static struct battery_state peripheral_battery_status_get_state(const zmk_event_
 #endif
 
 static struct battery_state central_battery_status_get_state(const zmk_event_t *eh) {
-    const struct zmk_battery_state_changed *ev = as_zmk_battery_state_changed(eh);
+    const struct zmk_battery_state_changed *ev = eh ? as_zmk_battery_state_changed(eh) : NULL;
     return (struct battery_state){
         .source = 0,
         .level = (ev != NULL) ? ev->state_of_charge : zmk_battery_state_of_charge(),
@@ -987,7 +1002,8 @@ static struct battery_state battery_status_get_state(const zmk_event_t *eh) {
 #if IS_ENABLED(CONFIG_NICE_OLED_WIDGET_CENTRAL_SHOW_BATTERY_PERIPHERAL_ALL) ||                     \
     IS_ENABLED(CONFIG_NICE_OLED_WIDGET_CENTRAL_SHOW_BATTERY_PERIPHERAL_ONLY) ||                    \
     IS_ENABLED(CONFIG_NICE_OLED_WIDGET_CENTRAL_SHOW_BATTERY_PERIPHERAL_AND_CENTRAL)
-    if (as_zmk_peripheral_battery_state_changed(eh) != NULL) {
+    // skreecustom: eh is NULL at init; upstream dereferenced it here
+    if (eh != NULL && as_zmk_peripheral_battery_state_changed(eh) != NULL) {
         return peripheral_battery_status_get_state(eh);
     } else {
         return central_battery_status_get_state(eh);
