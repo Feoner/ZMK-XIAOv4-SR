@@ -8,12 +8,16 @@ Usage:
 
 Produces:
   - catbus_0 .. catbus_N  : animation frames, FRAME_W x 68, drawn by the
-                            peripheral animation widget (X offset 36, so the
-                            usable width is 160 - 36 = 124 px).
+                            peripheral animation widget. Set
+                            CONFIG_NICE_OLED_WIDGET_ANIMATION_PERIPHERAL_CUSTOM_X=0
+                            so they fill raw x 0..123; raw x 124..159 is the
+                            battery/connection status.
   - catbus_sleep          : one full-screen 160 x 68 still used as sleep art.
 
-Images are stored in raw display orientation (160 x 68 landscape). The nice!view
-is mounted portrait, so the art shows up rotated: the bus runs up the screen.
+Images are stored in raw display orientation (160 x 68 landscape). The module
+rotates its status canvas 90 deg clockwise, so on the portrait screen raw x=159
+is the top and raw x=0 the bottom (view_y = 159 - raw_x, view_x = raw_y).
+Frames are mirrored so the bus faces raw +x, i.e. it runs up the screen.
 
 Rendering: outline of the silhouette plus dark/mid-tone details (stripes,
 windows, eye) become foreground pixels; everything else is background.
@@ -29,6 +33,7 @@ FRAME_W, FRAME_H = 124, 68  # animation slot
 SLEEP_W, SLEEP_H = 160, 68  # full screen
 ART_H_FRAME = 58            # catbus height inside an animation frame
 ART_H_SLEEP = 68            # catbus height inside the sleep image
+MIRROR = True               # face raw +x (= up on the portrait screen)
 DETAIL_THRESHOLD = 175      # luminance below this inside the body = ink
 
 
@@ -42,7 +47,10 @@ def load_frames(path):
     y0 = min(b[1] for b in boxes)
     x1 = max(b[2] for b in boxes)
     y1 = max(b[3] for b in boxes)
-    return [f.crop((x0, y0, x1, y1)) for f in frames], durations
+    frames = [f.crop((x0, y0, x1, y1)) for f in frames]
+    if MIRROR:
+        frames = [f.transpose(Image.Transpose.FLIP_LEFT_RIGHT) for f in frames]
+    return frames, durations
 
 
 def to_ink(frame, w, h):
