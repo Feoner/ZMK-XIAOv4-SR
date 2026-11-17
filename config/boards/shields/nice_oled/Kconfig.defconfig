@@ -168,6 +168,11 @@ config NICE_OLED_WIDGET_ANIMATION_PERIPHERAL_MS
 endif # NICE_OLED_WIDGET_ANIMATION_PERIPHERAL
 
 if NICE_OLED_WIDGET_STATIC_IMAGE_PERIPHERAL
+# skreecustom: still catbus (first frame of assets/catbus.c)
+config NICE_OLED_WIDGET_STATIC_IMAGE_PERIPHERAL_CATBUS
+    bool "Enable static catbus on peripheral"
+    default n
+
 config NICE_OLED_WIDGET_STATIC_IMAGE_PERIPHERAL_VIM
     bool "Enable static vim on peripheral"
     default n
