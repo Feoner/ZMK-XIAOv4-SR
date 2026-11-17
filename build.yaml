@@ -6,3 +6,13 @@ include:
     shield: skreecustom_right nice_view_adapter nice_epaper
   - board: seeeduino_xiao_ble
     shield: settings_reset
+  # --- Left-half delay test builds (temporary; delete after testing) ---
+  # A: new display module, sleep turned off
+  - board: seeeduino_xiao_ble
+    shield: skreecustom_left nice_view_adapter nice_epaper
+    cmake-args: -DCONFIG_ZMK_SLEEP=n
+    artifact-name: TEST-A_left_no_sleep
+  # B: stock nice!view display (like the old firmware), sleep on
+  - board: seeeduino_xiao_ble
+    shield: skreecustom_left nice_view_adapter nice_view
+    artifact-name: TEST-B_left_stock_nice_view
