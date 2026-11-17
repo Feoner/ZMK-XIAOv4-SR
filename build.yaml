@@ -7,12 +7,13 @@ include:
   - board: seeeduino_xiao_ble
     shield: settings_reset
   # --- Left-half delay test builds (temporary; delete after testing) ---
-  # A: new display module, sleep turned off
+  # C: no power management at all (soft-off and sleep off, like the working Nov 13 build)
   - board: seeeduino_xiao_ble
     shield: skreecustom_left nice_view_adapter nice_epaper
-    cmake-args: -DCONFIG_ZMK_SLEEP=n
-    artifact-name: TEST-A_left_no_sleep
-  # B: stock nice!view display (like the old firmware), sleep on
+    cmake-args: -DCONFIG_ZMK_SLEEP=n -DCONFIG_ZMK_PM_SOFT_OFF=n
+    artifact-name: TEST-C_left_no_power_mgmt
+  # D: power management on, but default idle timeout and screen blanking
   - board: seeeduino_xiao_ble
-    shield: skreecustom_left nice_view_adapter nice_view
-    artifact-name: TEST-B_left_stock_nice_view
+    shield: skreecustom_left nice_view_adapter nice_epaper
+    cmake-args: -DCONFIG_ZMK_IDLE_TIMEOUT=30000 -DCONFIG_ZMK_DISPLAY_BLANK_ON_IDLE=y
+    artifact-name: TEST-D_left_default_idle
